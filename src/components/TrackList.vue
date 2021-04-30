@@ -8,7 +8,7 @@
           </div>
           <div class="column is-1 is-offset-2">
             <b-button size="is-small"
-                      v-on:click="$emit('clear-list')"
+                      @click="$emit('clear-list')"
             >
               <font-awesome-icon icon="times-circle" />
             </b-button>
@@ -61,6 +61,7 @@ export default {
 
   data () {
     return {
+      pendingRequest: false,
       results: [],
       noImg: vinylImg,
       track: {},
@@ -74,35 +75,43 @@ export default {
     selected: Object,
     type: Boolean
   },
-  componentDidUpdate() {
-    console.log(this.props.selected)
+
+  watch: {
+    selected () {
+      if(!isEmpty(this.selected)){
+        this.createList();
+      }
+    }
   },
-  async mounted() {
-    this.$nextTick(async function (){
-      this.results = await this.createList()
-    })
-  },
+
   methods: {
     async createList () {
-      const selectedID = this.selected.id
-      const type_search = this.type ? 'a' : 't'
 
-      const request_options = {
-        method: 'GET',
-        url: `${process.env.VUE_APP_BACKEND_URL}/recommendations?seed=${selectedID}&type=${type_search}`,
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
+      try {
+
+        this.pendingRequest = true;
+        const selectedID = this.selected.id
+        const type_search = this.type ? 'a' : 't'
+
+        const request_options = {
+          method: 'GET',
+          url: `${process.env.VUE_APP_BACKEND_URL}/recommendations?seed=${selectedID}&type=${type_search}`,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          }
         }
-      }
 
-      return await axios(request_options).then(
-          response => {
+        const response = await axios(request_options)
+        this.results = Object.keys(response.data).length === 0 ? [] : response.data.tracks
 
-            const notEmpty = Object.keys(response.data).length === 0
-            if (!notEmpty){
-              return response.data.tracks
-            }
+        if(!isEmpty(this.results)){
+          this.results.unshift(this.selected)
+        }
+      } catch (e) {
+
+        console.log(e);
+      } finally {
 
         this.pendingRequest = false;
       }

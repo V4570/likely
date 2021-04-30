@@ -17,11 +17,12 @@
                 v-model="query"
                 :data="searchResults"
                 :loading="isFetching"
-                v-on:input="autocomplete"
-                v-bind:placeholder="trackOrArtist ? 'e.g. The Beatles' : 'e.g. Yellow Submarine'"
+                :placeholder="trackOrArtist ? 'e.g. The Beatles' : 'e.g. Yellow Submarine'"
                 icon="magnify"
                 clearable
-                @select="option => $emit('recommend-list', {selection: option, type: trackOrArtist})">
+                keep-first
+                @input="autocomplete"
+                @select="option => $emit('recommend-list', {selection: option, type: trackOrArtist, limit: limit})">
 
               <template slot-scope="props">
                 <div class="media">
@@ -132,8 +133,6 @@ export default {
 
         console.log(e)
       }
-
-      return [];
     }
   }
 }

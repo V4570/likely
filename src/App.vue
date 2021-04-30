@@ -50,7 +50,9 @@ export default {
       showList: false,
       selected: {},
       type: "",
-      rerender: 0
+      showNav: false,
+      likelyLogo: logo,
+      likelyLogoL: logoL
     }
   },
   methods: {
@@ -58,9 +60,6 @@ export default {
       this.type = selected.type
       this.selected = Object.assign({}, this.selected, selected.selection)
       this.showList = true
-      // xor the rerender variable to force rerender the tracklist object to fetch new data from the backend
-      // 0 XOR 1 = 1 ; 1 XOR 1 = 0
-      this.rerender ^= 1
     },
     clearRecommendationsList () {
       this.selected = Object.assign({}, {})

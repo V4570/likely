@@ -1,12 +1,16 @@
 <template>
-  <div class="container block">
+  <div class="container search-bar">
     <div class="columns">
       <div class="column is-three-fifths is-offset-one-fifth">
         <section>
-          <b-field label="Get recommendations based on a favorite track or artist">
-            <b-radio v-model='trackOrArtist' :native-value='false'>Track</b-radio>
-            <b-radio v-model='trackOrArtist' :native-value='true'>Artist</b-radio>
-          </b-field>
+          <div class="columns is-centered">
+            <b-field label="Get recommendations based on a favorite track or artist"
+                     position="is-centered"
+                     custom-class="has-text-light">
+              <b-radio v-model='trackOrArtist' :native-value='false'>Track</b-radio>
+              <b-radio v-model='trackOrArtist' :native-value='true'>Artist</b-radio>
+            </b-field>
+          </div>
           <b-field loading>
             <b-autocomplete
                 rounded
@@ -38,8 +42,7 @@
                   </div>
                   <div class="media-content">
                     <div v-if="!trackOrArtist" class="content">
-                      {{ props.option.name }}
-                      <br>
+                      <h5>{{ props.option.name }}</h5>
                       <small v-for="(artist, index) in props.option.artists" :key="artist.name">
                         <template v-if="index < props.option.artists.length -1">
                           {{ artist.name }},
@@ -67,6 +70,7 @@
 
 <script>
 import axios from 'axios';
+import {isEmpty, debounce} from 'lodash'
 import vinylImg from '../assets/no-image.png'
 
 export default {
@@ -80,22 +84,31 @@ export default {
       roundedImages: true,
       // false search for track, true search for artist
       trackOrArtist: false,
+      limit: 20
     }
   },
   methods: {
-    async autocomplete () {
-      const results = await this.searchTrack();
+
+    // debounce groups inputs into one request so that we don't flood the server with every keystroke
+    autocomplete: debounce(async function() {
+      const results = await this.search()
 
       this.searchResults = [];
+
       if(results.length){
         results.forEach(item => {
           this.searchResults.push(item)
         })
       }
+
       this.isFetching = false
-    },
-    async searchTrack () {
-      if ((this.query !== "") && (typeof this.query !== 'undefined')) {
+    }, 180),
+
+    async search () {
+      if (isEmpty(this.query)) { return []; }
+
+      try{
+
         this.isFetching = true
         const searchFor = this.trackOrArtist ? "artist" : "track"
 
@@ -107,22 +120,17 @@ export default {
             "Content-Type": "application/json",
           }
         }
-        const res = await axios(request_options).then(
-            function (response) {
 
-              const notEmpty = Object.keys(response.data).length === 0
-              if (!notEmpty){
-                return response.data
-              }
+        const response = await axios(request_options)
 
-              return []
-            }
-        ).catch(function (error){
-          console.log(error)
-          return Promise.reject(error)
-        });
+        if (isEmpty(response.data)){
+          return []
+        }
 
-        return this.trackOrArtist ? res.artists.items : res.tracks.items
+        return this.trackOrArtist ? response.data.artists.items : response.data.tracks.items
+      } catch (e){
+
+        console.log(e)
       }
 
       return [];
@@ -133,5 +141,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.search-bar{
+  margin-top: 60px;
+}
 </style>

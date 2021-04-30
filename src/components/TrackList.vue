@@ -15,26 +15,26 @@
           </div>
         </div>
         <ul id="recommended-tracks">
-          <li v-for="track in results" :key="track.name" class="block">
-            <div class="box">
-              <div class="columns is-mobile">
-                <div class="column is-2-desktop is-2-tablet is-2-mobile">
-                  <img class="rounded-corners b-image-wrapper"
-                       :src="`${track.album.images.length > 0 ?
+          <li v-for="track in results" :key="track.name" class="list-object">
+            <div class="columns is-mobile">
+              <div class="column is-2-desktop is-2-tablet is-2-mobile">
+                <img class="rounded-corners b-image-wrapper"
+                     :src="`${track.album.images.length > 0 ?
                        track.album.images[1].url : noImg}`" alt="Album Cover"/>
-                </div>
-                <div class="column is-one-third-desktop is-one-third-mobile has-text-left">
-                  {{ track.name }}
-                  <br>
-                  <small v-for="(artist, index) in track.artists" :key="artist.name">
-                    <template v-if="index < track.artists.length -1">
-                      {{ artist.name }},
-                    </template>
-                    <template v-else>
-                      {{ artist.name }}
-                    </template>
-                  </small>
-                </div>
+              </div>
+              <div class="column is-one-third-desktop is-one-third-mobile has-text-left">
+                <h1>{{ track.name }}</h1>
+                <small v-for="(artist, index) in track.artists" :key="artist.name">
+                  <template v-if="index < track.artists.length -1">
+                    {{ artist.name }},
+                  </template>
+                  <template v-else>
+                    {{ artist.name }}
+                  </template>
+                </small>
+                <br/>
+                <br/>
+                <font-awesome-icon @click.prevent="playSound(track.preview_url)" icon="play-circle" class="play-button"></font-awesome-icon>
               </div>
             </div>
           </li>
@@ -47,15 +47,18 @@
 <script>
 import axios from "axios";
 import vinylImg from '../assets/no-image.png'
-
+import {isEmpty} from 'lodash'
 export default {
+
   data () {
     return {
       results: [],
       noImg: vinylImg,
-      track: {}
+      track: {},
+      playingAudio: false
     }
   },
+
   props: {
     selected: Object,
     type: Boolean
@@ -103,5 +106,15 @@ export default {
 <style scoped>
 .rounded-corners{
   border-radius: 20%;
+}
+.list-object{
+  margin-bottom: 50px;
+}
+.play-button{
+  color: #fff;
+  font-size: 2vw;
+}
+.play-button:hover{
+  color: #1DB954;
 }
 </style>

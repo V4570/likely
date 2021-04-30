@@ -22,8 +22,9 @@
                      :src="`${track.album.images.length > 0 ?
                        track.album.images[1].url : noImg}`" alt="Album Cover"/>
               </div>
-              <div class="column is-one-third-desktop is-one-third-mobile has-text-left">
-                <h1>{{ track.name }}</h1>
+              <div class="column is-two-fifths-desktop is-one-third-mobile has-text-left">
+                <b>{{track.name}}</b>
+                <br/>
                 <small v-for="(artist, index) in track.artists" :key="artist.name">
                   <template v-if="index < track.artists.length -1">
                     {{ artist.name }},
@@ -34,7 +35,15 @@
                 </small>
                 <br/>
                 <br/>
-                <font-awesome-icon @click.prevent="playSound(track.preview_url)" icon="play-circle" class="play-button"></font-awesome-icon>
+                <div>
+                  <audio
+                      :ref="`player-${track.name}`"
+                      controls
+                      :src="track.preview_url"
+                      type="audio/mpeg"
+                      @play="stopOthers(track.name)"
+                  ></audio>
+                </div>
               </div>
             </div>
           </li>
@@ -55,7 +64,9 @@ export default {
       results: [],
       noImg: vinylImg,
       track: {},
-      playingAudio: false
+      playingAudio: false,
+      currentlyPlaying: null,
+      currentTrack: null
     }
   },
 
@@ -93,11 +104,17 @@ export default {
               return response.data.tracks
             }
 
-            return []
-          }
-      ).catch(error => {
-        console.log(error)
-      });
+        this.pendingRequest = false;
+      }
+    },
+
+    stopOthers(newTrack) {
+      if (this.currentTrack && this.currentTrack !== newTrack) {
+        let refName = `player-${this.currentTrack}`;
+        let player = this.$refs[refName][0];
+        player.pause();
+      }
+      this.currentTrack = newTrack;
     }
   }
 }
@@ -109,12 +126,5 @@ export default {
 }
 .list-object{
   margin-bottom: 50px;
-}
-.play-button{
-  color: #fff;
-  font-size: 2vw;
-}
-.play-button:hover{
-  color: #1DB954;
 }
 </style>

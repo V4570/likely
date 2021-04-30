@@ -84,8 +84,8 @@ export default {
 }
 
 // Colors
-$bg-color: hsl(256,33,10);
-$dot-color: hsl(256,33,70);
+$bg-color: hsl(256,33%,10%);
+$dot-color: hsl(256,33%,70%);
 
 // Dimensions
 $dot-size: 1px;

@@ -16,7 +16,12 @@
         <div class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
           <!-- navbar start, navbar end -->
           <div class="navbar-end">
-
+            <b-navbar-item tag="div">
+              <Signup />
+            </b-navbar-item>
+            <b-navbar-item tag="div">
+              <Login />
+            </b-navbar-item>
           </div>
         </div>
       </header>
@@ -36,6 +41,8 @@
 <script>
 import Search from './components/Search.vue'
 import TrackList from './components/TrackList.vue'
+import Signup from "@/components/Signup";
+import Login from './components/Login.vue'
 import logo from './assets/likely-logo.png'
 import logoL from './assets/likely-logo-l.png'
 
@@ -43,7 +50,9 @@ export default {
   name: 'App',
   components: {
     Search,
-    TrackList
+    TrackList,
+    Signup,
+    Login
   },
   data () {
     return {
@@ -52,7 +61,7 @@ export default {
       type: "",
       showNav: false,
       likelyLogo: logo,
-      likelyLogoL: logoL
+      likelyLogoL: logoL,
     }
   },
   methods: {

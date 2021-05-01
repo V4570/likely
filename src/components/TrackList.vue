@@ -7,11 +7,7 @@
             List based on {{ type ? "Artist" : "Track"}}
           </div>
           <div class="column is-1 is-offset-2">
-            <b-button size="is-small"
-                      @click="$emit('clear-list')"
-            >
-              <font-awesome-icon icon="times-circle" />
-            </b-button>
+            <font-awesome-icon icon="times-circle" class="close-btn" @click="$emit('clear-list')"/>
           </div>
         </div>
         <ul id="recommended-tracks">
@@ -105,7 +101,7 @@ export default {
         const response = await axios(request_options)
         this.results = Object.keys(response.data).length === 0 ? [] : response.data.tracks
 
-        if(!isEmpty(this.results)){
+        if(!isEmpty(this.results) && !this.type){
           this.results.unshift(this.selected)
         }
       } catch (e) {
@@ -135,5 +131,12 @@ export default {
 }
 .list-object{
   margin-bottom: 50px;
+}
+.close-btn{
+  font-size: 1vw;
+}
+.close-btn:hover{
+  color: #EE3148;
+  cursor: pointer;
 }
 </style>

@@ -18,7 +18,7 @@
                 :data="searchResults"
                 :loading="isFetching"
                 :placeholder="trackOrArtist ? 'e.g. The Beatles' : 'e.g. Yellow Submarine'"
-                icon="magnify"
+                icon="search"
                 clearable
                 keep-first
                 @input="autocomplete"

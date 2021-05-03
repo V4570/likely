@@ -4,7 +4,7 @@
       <div class="column is-three-fifths is-offset-one-fifth">
         <div class="columns">
           <div class="column is-half is-offset-one-quarter">
-            List based on {{ type ? "Artist" : "Track"}}
+            List based on {{ selected.name }}
           </div>
           <div class="column is-1 is-offset-2">
             <font-awesome-icon icon="times-circle" class="close-btn" @click="$emit('clear-list')"/>
@@ -31,7 +31,7 @@
                 </small>
                 <br/>
                 <br/>
-                <div>
+                <div v-if="track.preview_url">
                   <audio
                       :ref="`player-${track.name}`"
                       controls
@@ -39,6 +39,10 @@
                       type="audio/mpeg"
                       @play="stopOthers(track.name)"
                   ></audio>
+                </div>
+                <div v-else>
+                  <font-awesome-icon icon="times-circle" style="font-size: 1vw;" class="has-text-grey has-text-justified"/>
+                  <span class="has-text-grey"> Preview not available.</span>
                 </div>
               </div>
             </div>
@@ -119,7 +123,9 @@ export default {
         let player = this.$refs[refName][0];
         player.pause();
       }
-      this.currentTrack = newTrack;
+      if(newTrack){
+        this.currentTrack = newTrack;
+      }
     }
   }
 }

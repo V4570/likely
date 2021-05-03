@@ -1,13 +1,22 @@
 <template>
   <div id="app">
+    <Navbar v-if="isAuthenticated"/>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Navbar from "@/components/Navbar";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Navbar
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated"])
+  }
 }
 </script>
 
@@ -18,6 +27,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100vh;
 }
 
 // Colors
@@ -35,7 +45,5 @@ linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
 $dot-color;
   background-size: $dot-space $dot-space;
 }
-
-
 
 </style>

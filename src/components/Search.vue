@@ -115,7 +115,7 @@ export default {
 
         const request_options = {
           method: 'GET',
-          url: `${process.env.VUE_APP_BACKEND_URL}/search-track?q=${this.query}&search-for=${searchFor}`,
+          url: `${process.env.VUE_APP_BACKEND_URL}/search?q=${this.query}&search-for=${searchFor}`,
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",

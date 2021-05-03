@@ -1,79 +1,85 @@
 <template>
-  <section>
-    <b-button
-        label="Signup"
-        type="is-primary"
-        @click="isComponentModalActive = true" />
-    <b-modal
-        v-model="isComponentModalActive"
-        has-modal-card
-        trap-focus
-        :destroy-on-hide="false"
-        aria-role="dialog"
-        aria-label="Example Modal"
-        aria-modal>
-      <template #default="props">
-        <signup-modal @close="props.close" @signup="signup"></signup-modal>
-      </template>
-    </b-modal>
-  </section>
+  <div id="login" class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-header-title is-centered">
+                  Signup to Likely
+                </div>
+              </div>
+              <div class="card-content">
+                <b-field label="Email" label-position="on-border">
+                  <b-input
+                      type="email"
+                      v-model="email"
+                      placeholder="Your email"
+                      required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Username" label-position="on-border">
+                  <b-input
+                      type="username"
+                      v-model="username"
+                      placeholder="Your username"
+                      required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Password" label-position="on-border">
+                  <b-input
+                      type="password"
+                      v-model="password"
+                      password-reveal
+                      placeholder="Your password"
+                      required>
+                  </b-input>
+                </b-field>
+                <div class="mt-5">
+                  Already have an account?
+                </div>
+                <router-link to="/login">Go back to the login page.</router-link>
+              </div>
+              <div class="card-footer">
+                <div class="card-footer-item">
+                  <b-button
+                      label="Signup"
+                      type="is-primary"
+                      @click="signup"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import SignupModal from "@/components/SignupModal";
-import {isEmpty} from "lodash";
-import axios from "axios";
+import { SIGNUP_REQUEST } from "@/store"
 
 export default {
-  components: {
-    SignupModal
-  },
-  data() {
+  name: "Signup",
+  data () {
     return {
-      isComponentModalActive: false,
-      email: '',
       username: '',
+      email: '',
       password: ''
     }
   },
   methods: {
-    async signup (credentials) {
-      this.username = credentials.username
-      this.password = credentials.password
-      this.email = credentials.email
-
-      if (isEmpty(this.username) || isEmpty(this.password)){
-        console.log('empty fields')
-      }
-
-      try{
-
-        const loginOptions = {
-          method: 'POST',
-          url: `${process.env.VUE_APP_BACKEND_URL}/signup`,
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-          data: {
-            email: this.email,
-            username: this.username,
-            password: this.password
-          }
-        }
-
-        const response = await axios(loginOptions)
-
-
-        console.log(response)
-        this.username = ''
-        this.password = ''
-        this.email = ''
-      }
-      catch (e){
+    signup () {
+      this.$store.dispatch(SIGNUP_REQUEST,
+          {username: this.username, password: this.password, email: this.email}).then(() =>{
+        this.$router.push('/login')
+      }).catch(e => {
         const errorResponse = e.response
 
-        switch (errorResponse.status){
+        switch (errorResponse.status) {
           case 409:
             this.alertCustomError("Conflict Error",
                 "A user with this username or email already exists.<br/>" +
@@ -82,7 +88,7 @@ export default {
           default:
             console.log(e)
         }
-      }
+      })
     },
     alertCustomError(errorTitle, msg) {
       this.$buefy.dialog.alert({

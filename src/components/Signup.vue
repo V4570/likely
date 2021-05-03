@@ -16,7 +16,8 @@
                       type="email"
                       v-model="email"
                       placeholder="Your email"
-                      required>
+                      required
+                      icon="envelope">
                   </b-input>
                 </b-field>
 
@@ -25,7 +26,8 @@
                       type="username"
                       v-model="username"
                       placeholder="Your username"
-                      required>
+                      required
+                      icon="user">
                   </b-input>
                 </b-field>
 
@@ -35,7 +37,8 @@
                       v-model="password"
                       password-reveal
                       placeholder="Your password"
-                      required>
+                      required
+                      icon="lock">
                   </b-input>
                 </b-field>
                 <div class="mt-5">

@@ -104,7 +104,7 @@ export default {
       }
 
       this.isFetching = false
-    }, 180),
+    }, 250),
 
     async search () {
       if (isEmpty(this.query)) { return []; }

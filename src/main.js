@@ -9,14 +9,15 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
   faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
   faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload, faTimesCircle, faSearch, faLock,
-  faUser, faEnvelope, faSave } from "@fortawesome/free-solid-svg-icons";
+  faUser, faEnvelope, faSave} from "@fortawesome/free-solid-svg-icons"
+import { faSpotify } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
     faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
     faArrowUp, faAngleRight, faAngleLeft, faAngleDown, faEye, faEyeSlash,
     faCaretDown, faCaretUp, faUpload, faTimesCircle, faSearch, faLock,
-    faUser, faEnvelope, faSave)
+    faUser, faEnvelope, faSave, faSpotify)
 
 
 Vue.prototype.$http = Axios;

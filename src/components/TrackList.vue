@@ -20,7 +20,7 @@
           </div>
         </div>
         <ul id="recommended-tracks">
-          <li v-for="track in results" :key="track.name" class="list-object">
+          <li v-for="(track, index) in results" :key="index" class="list-object">
             <div class="columns is-mobile is-vcentered">
               <div class="column is-2-desktop is-2-tablet is-2-mobile">
                 <img class="rounded-corners b-image-wrapper"
@@ -30,7 +30,7 @@
               <div class="column is-4-desktop is-two-thirds-mobile has-text-left truncate">
                 <b>{{track.name}}</b>
                 <br/>
-                <small v-for="(artist, index) in track.artists" :key="artist.name">
+                <small v-for="(artist, index) in track.artists" :key="index">
                   <template v-if="index < track.artists.length -1">
                     {{ artist.name }},
                   </template>
@@ -39,7 +39,7 @@
                   </template>
                 </small>
               </div>
-              <div class="column is-3-desktop is-one-third-mobile has-text-left">
+              <div class="column is-5-desktop is-one-third-mobile has-text-left">
                 <div v-if="track.preview_url">
                   <b>Preview:</b>
                   <br/>
@@ -55,6 +55,13 @@
                   <font-awesome-icon icon="times-circle" style="font-size: 1vw;" class="has-text-grey has-text-justified"/>
                   <span class="has-text-grey"> Preview not available.</span>
                 </div>
+              </div>
+              <div class="column is-1-desktop has-text-left">
+                <a :href="track.external_urls.spotify"
+                   class="spotify-btn"
+                   target="_blank">
+                  <font-awesome-icon :icon="['fab', 'spotify']"/>
+                </a>
               </div>
             </div>
           </li>
@@ -245,6 +252,16 @@ export default {
 
 .close-btn:hover{
   color: #EE3148;
+  cursor: pointer;
+}
+
+.spotify-btn{
+  color: #fff;
+  font-size: 1.2vw;
+}
+
+.spotify-btn:hover{
+  color: #1DB954;
   cursor: pointer;
 }
 

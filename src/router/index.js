@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
-import Signup from "@/components/Signup";
+import Signup from "@/components/Signup"
+import SavedPlaylists from "@/components/SavedPlaylists"
 import store from '@/store'
 
 Vue.use(Router)
@@ -44,6 +45,12 @@ export default new Router({
             name: 'Signup',
             component: Signup,
             beforeEnter: ifAuthenticatedLogin
+        },
+        {
+            path: '/saved',
+            name: 'Saved Playlists',
+            component: SavedPlaylists,
+            beforeEnter: ifNotAuthenticated
         }
     ]
 })

@@ -5,6 +5,14 @@
         <b-image :src="likelyLogo" alt="Likely: get song recommendations."/>
       </b-navbar-item>
     </template>
+    <template #start>
+      <b-navbar-item>
+        <router-link to="/">Home</router-link>
+      </b-navbar-item>
+      <b-navbar-item>
+        <router-link to="/saved">Saved Playlists</router-link>
+      </b-navbar-item>
+    </template>
     <template #end>
       <b-navbar-item tag="div">
         <div class="buttons">

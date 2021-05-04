@@ -72,6 +72,7 @@
 <script>
 import axios from 'axios';
 import {isEmpty, debounce} from 'lodash'
+import {LOGOUT} from "@/store"
 import vinylImg from '../assets/no-image.png'
 
 export default {
@@ -119,6 +120,7 @@ export default {
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + this.$store.state.token
           }
         }
 
@@ -130,8 +132,14 @@ export default {
 
         return this.trackOrArtist ? response.data.artists.items : response.data.tracks.items
       } catch (e){
+        const errorResponse = e.response
 
-        console.log(e)
+        switch(errorResponse.status){
+          case 401:
+            this.$store.dispatch(LOGOUT).then(() => {
+              this.$router.push('/login')
+            })
+        }
       }
     }
   }

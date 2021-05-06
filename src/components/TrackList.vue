@@ -130,7 +130,7 @@ export default {
 
         const request_options = {
           method: 'GET',
-          url: `${process.env.VUE_APP_BACKEND_URL}/recommendations?seed=${selectedID}&type=${type_search}`,
+          url: `/api/recommendations?seed=${selectedID}&type=${type_search}`,
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -160,7 +160,7 @@ export default {
 
           const options = {
             method: 'POST',
-            url: `${process.env.VUE_APP_BACKEND_URL}/playlist/save`,
+            url: "/api/playlist/save",
             headers: {
               "Accept": "application/json",
               "Content-Type": "application/json",

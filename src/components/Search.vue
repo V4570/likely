@@ -116,7 +116,7 @@ export default {
 
         const request_options = {
           method: 'GET',
-          url: `${process.env.VUE_APP_BACKEND_URL}/search?q=${this.query}&search-for=${searchFor}`,
+          url: `/api/search?q=${this.query}&search-for=${searchFor}`,
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -134,11 +134,29 @@ export default {
       } catch (e){
         const errorResponse = e.response
 
-        switch(errorResponse.status){
-          case 401:
-            this.$store.dispatch(LOGOUT).then(() => {
-              this.$router.push('/login')
-            })
+        if (isEmpty(errorResponse)){
+          this.$buefy.toast.open({
+            duration: 3000,
+            message: "Something went wrong.",
+            type: 'is-danger'
+          })
+          return []
+        }
+        else{
+          switch(errorResponse.status){
+            case 401:
+              this.$store.dispatch(LOGOUT).then(() => {
+                this.$router.push('/login')
+              })
+              return []
+            default:
+              this.$buefy.toast.open({
+                duration: 3000,
+                message: "Something went wrong.",
+                type: 'is-danger'
+              })
+              return []
+          }
         }
       }
     }

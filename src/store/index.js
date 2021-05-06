@@ -55,7 +55,7 @@ export default new Vuex.Store({
                 commit(LOGIN_REQUEST)
                 const loginOptions = {
                     method: 'POST',
-                    url: `${process.env.VUE_APP_BACKEND_URL}/login`,
+                    url: "/api/login",
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export default new Vuex.Store({
                 commit(SIGNUP_REQUEST)
                 const signupOptions = {
                     method: 'POST',
-                    url: `${process.env.VUE_APP_BACKEND_URL}/signup`,
+                    url: "/api/signup",
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",

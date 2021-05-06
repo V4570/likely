@@ -111,7 +111,7 @@ export default {
 
         const options = {
           method: 'GET',
-          url: `${process.env.VUE_APP_BACKEND_URL}/playlists`,
+          url: "/api/playlists",
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
